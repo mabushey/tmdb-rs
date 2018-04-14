@@ -11,19 +11,20 @@ pub trait TMDbApi {
 }
 
 pub struct TMDb { 
-    pub api_key: &'static str 
+    pub api_key: &'static str,
+    pub language: &'static str,
 }
 
 impl TMDbApi for TMDb {
 
     fn fetch_movie(&self, id: u64) -> Option<Movie> {
-        let url: String = format!("{}/movie/{}?api_key={}", BASE_URL, id, self.api_key);
+        let url: String = format!("{}/movie/{}?api_key={}&language={}", BASE_URL, id, self.api_key, self.language);
         let movie: Movie = reqwest::get(&url).unwrap().json().unwrap();
         return Some(movie);
     }
 
     fn search_movie(&self, query: &str) -> Vec<SearchMovie> {
-        let url: String = format!("{}/search/movie?api_key={}&query={}&append_to_response=images", BASE_URL, self.api_key, query);
+        let url: String = format!("{}/search/movie?api_key={}&language={}&query={}&append_to_response=images", BASE_URL, self.api_key, self.language, query);
         let search_result: SearchResult = reqwest::get(&url).unwrap().json().unwrap();
         let movies: Vec<SearchMovie> = search_result.results;
         return movies;

@@ -12,7 +12,8 @@ mod unit_tests {
     use themoviedb::{TMDbApi};
 
     struct TMDbMock {
-        api_key: &'static str
+        api_key: &'static str,
+        language: &'static str,
     }
 
     impl TMDbApi for TMDbMock {
@@ -28,11 +29,17 @@ mod unit_tests {
     }
 
     const API_KEY: &'static str = "123456789";
-    const TMDB: TMDbMock = TMDbMock { api_key: API_KEY };
+    const LANGUAGE: &'static str = "en";
+    const TMDB: TMDbMock = TMDbMock { api_key: API_KEY, language: LANGUAGE};
 
     #[test]
     fn api_key_not_modified() {
         assert_eq!(API_KEY, TMDB.api_key);
+    }
+
+    #[test]
+    fn language_not_modified() {
+        assert_eq!(LANGUAGE, TMDB.language);
     }
 
     #[test]
@@ -77,7 +84,8 @@ mod integration_tests {
     use themoviedb::*;
 
     const API_KEY: &'static str = env!("TMDB_API_KEY");
-    const TMDB: TMDb = TMDb { api_key: API_KEY };
+    const LANGUAGE: &'static str = "en";
+    const TMDB: TMDb = TMDb { api_key: API_KEY, language: LANGUAGE };
 
     #[test]
     fn fetch_movie() {
