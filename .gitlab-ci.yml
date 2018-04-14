@@ -1,6 +1,7 @@
 stages:
   - build
   - test
+  - deploy
 
 build:
   stage: build
@@ -22,3 +23,13 @@ integration_tests:
     - server
   script:
     - cargo test integration_tests
+
+deploy:
+  stage: deploy
+  script:
+    - cargo login $CRATES_TOKEN
+    - cargo package
+    - cargo publish
+  when: manual
+  only:
+    - master
