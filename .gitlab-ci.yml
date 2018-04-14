@@ -34,7 +34,7 @@ deploy:
   tags:
     - server
   script:
-    - cargo login <($CRATES_TOKEN)
+    - cargo login $CRATES_TOKEN
     - cargo package
     - cargo publish
   when: manual
