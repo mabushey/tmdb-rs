@@ -74,7 +74,7 @@ mod unit_tests {
 mod integration_tests {
 
     use model::{Movie,SearchMovie};
-    use themoviedb::{TMDbApi, TMDb};
+    use themoviedb::*;
 
     const API_KEY: &'static str = env!("TMDB_API_KEY");
     const TMDB: TMDb = TMDb { api_key: API_KEY };
@@ -90,6 +90,13 @@ mod integration_tests {
         let empty_movies: Vec<SearchMovie> = vec![];
         let movies: Vec<SearchMovie> = TMDB.search_movie("Interstellar");
         assert_ne!(empty_movies, movies);
+    }
+
+    #[test]
+    fn fetch_searched_movie() {
+        let search_movies: Vec<SearchMovie> = TMDB.search_movie("Interstellar");
+        let movie: Movie = search_movies[0].fetch(&TMDB);
+        assert_eq!("Interstellar", movie.title);
     }
 
 }

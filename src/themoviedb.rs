@@ -32,12 +32,12 @@ impl TMDbApi for TMDb {
 }
 
 pub trait Fetchable {
-    fn fetch(&self, tmdb: TMDb) -> Movie;
+    fn fetch(&self, tmdb: &TMDb) -> Movie;
 }
 
 impl Fetchable for SearchMovie {
 
-    fn fetch(&self, tmdb: TMDb) -> Movie {
+    fn fetch(&self, tmdb: &TMDb) -> Movie {
         return tmdb.fetch_movie(self.id).unwrap();
     }
 
