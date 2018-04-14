@@ -1,10 +1,9 @@
 #[macro_use]
 extern crate serde_derive;
 extern crate reqwest;
-extern crate url;
 
-mod model;
-mod themoviedb;
+pub mod model;
+pub mod themoviedb;
 
 #[cfg(test)]
 mod unit_tests {
