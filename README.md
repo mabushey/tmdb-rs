@@ -6,13 +6,20 @@ You can search and fetch Movies from **The Movie Databse**.
 ## Usage
 
 ```rust
-let tmdb: TMDb = TMDb { api_key: "123456789" };
+extern crate tmdb;
 
-let movie = tmdb.fetch_movie(157336).unwrap();
-println!("{:?}", movie);
+use tmdb::model::*;
+use tmdb::themoviedb::*;
 
-let search_movies = tmdb.search_movie("Interstellar").unwrap();
-println!("{:?}", search_movies);
+fn main() {
+    let tmdb: TMDb = TMDb { api_key: env!("TMDB_API_KEY") };
+
+    let movie: Movie = tmdb.fetch_movie(157336).unwrap();
+    println!("{:?}", movie);
+
+    let search_movies: Vec<SearchMovie> = tmdb.search_movie("Interstellar");
+    println!("{:?}", search_movies);
+}
 ```
 
 https://www.themoviedb.org/
