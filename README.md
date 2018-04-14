@@ -1,4 +1,4 @@
-# The Movie Databse
+# The Movie Database
 
 This is a wrapper around the [TMDb API](https://developers.themoviedb.org/3).  
 You can search and fetch Movies from **The Movie Databse**.
