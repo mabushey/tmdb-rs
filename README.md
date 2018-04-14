@@ -18,7 +18,11 @@ fn main() {
     println!("{:?}", movie);
 
     let search_movies: Vec<SearchMovie> = tmdb.search_movie("Interstellar");
-    println!("{:?}", search_movies);
+
+    for movie in search_movies {
+        println!("{} {}", movie.title, movie.release_date.unwrap());
+    }
+
 }
 ```
 
