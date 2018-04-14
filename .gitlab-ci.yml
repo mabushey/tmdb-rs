@@ -1,0 +1,24 @@
+stages:
+  - build
+  - test
+
+build:
+  stage: build
+  tags:
+    - server
+  script:
+    - cargo build
+
+unit_tests:
+  stage: test
+  tags:
+    - server
+  script:
+    - cargo test unit_tests
+
+integration_tests:
+  stage: test
+  tags:
+    - server
+  script:
+    - cargo test integration_tests
