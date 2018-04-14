@@ -3,6 +3,11 @@ stages:
   - test
   - deploy
 
+cache:
+  paths:
+    - target/
+    - ~/.cargo/
+
 build:
   stage: build
   tags:
@@ -26,6 +31,8 @@ integration_tests:
 
 deploy:
   stage: deploy
+  tags:
+    - server
   script:
     - cargo login $CRATES_TOKEN
     - cargo package
