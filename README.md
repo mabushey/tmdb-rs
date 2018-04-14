@@ -28,4 +28,8 @@ fn main() {
 }
 ```
 
+## Acknowledgements
+
+* This lib is heavily inspired by [omdb-rs](https://github.com/aldrio/omdb-rs)
+
 https://www.themoviedb.org/
