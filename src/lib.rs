@@ -1,86 +1,37 @@
 #[macro_use]
 extern crate serde_derive;
+extern crate serde;
 extern crate reqwest;
 
 pub mod model;
 pub mod themoviedb;
 
-#[cfg(test)]
-mod unit_tests {
+// #[cfg(test)]
+// mod unit_tests {
 
-    use model::{Movie,SearchMovie};
-    use themoviedb::{TMDbApi};
+//     use model::*;
+//     use themoviedb::*;
 
-    struct TMDbMock {
-        api_key: &'static str,
-        language: &'static str,
-    }
+//     const API_KEY: &'static str = "123456789";
+//     const LANGUAGE: &'static str = "en";
+//     // const TMDB: TMDb = TMDb { api_key: API_KEY, language: LANGUAGE};
 
-    impl TMDbApi for TMDbMock {
+//     #[test]
+//     fn test() {
+//         // let result = TMDB.search()
+//         //     .title("Interstellar")
+//         //     .execute();
 
-        fn fetch_movie(&self, _: u64) -> Option<Movie> {
-            return Some(dummy_movie());
-        }
-
-        fn search_movie(&self, _: &str) -> Vec<SearchMovie> {
-            return vec![];
-        }
-
-    }
-
-    const API_KEY: &'static str = "123456789";
-    const LANGUAGE: &'static str = "en";
-    const TMDB: TMDbMock = TMDbMock { api_key: API_KEY, language: LANGUAGE};
-
-    #[test]
-    fn api_key_not_modified() {
-        assert_eq!(API_KEY, TMDB.api_key);
-    }
-
-    #[test]
-    fn language_not_modified() {
-        assert_eq!(LANGUAGE, TMDB.language);
-    }
-
-    #[test]
-    fn fetch_movie() {
-        let dummy_movie = dummy_movie();
-        let movie = TMDB.fetch_movie(157336).unwrap();
-        assert_eq!(dummy_movie, movie);
-    }
-
-    #[test]
-    fn search_movie() {
-        let movies = TMDB.search_movie("Interstellar");
-        assert_eq!(movies, vec![]);
-    }
-
-
-    fn dummy_movie() -> Movie {
-        return Movie {
-            id: 157336,
-            imdb_id: "ttxxxxxxx".to_string(),
-            title: "Interstellar".to_string(),
-            original_title: "Interstellar".to_string(),
-            original_language: "en".to_string(),
-            overview: Some("foo".to_string()),
-            release_date: Some("2017-02-02".to_string()),
-            runtime: 120,
-            genres: vec![],
-            poster_path: Some("foo".to_string()),
-            backdrop_path: Some("foo".to_string()),
-            popularity: 0.0,
-            budget: 1200000,
-            adult: false,
-        };
-    }
-
-}
+//         // println!("{:?}", result);
+//         assert_eq!(1,1);
+//     }
+    
+// }
 
 #[cfg(test)]
 mod integration_tests {
 
-    use model::{Movie,SearchMovie};
+    use model::{Movie,SearchMovie,FindMovie};
     use themoviedb::*;
 
     const API_KEY: &'static str = env!("TMDB_API_KEY");
@@ -89,22 +40,89 @@ mod integration_tests {
 
     #[test]
     fn fetch_movie() {
-        let movie: Movie = TMDB.fetch_movie(157336).unwrap();
+        let movie: Movie = TMDB.fetch()
+            .id(157336)
+            .execute()
+            .unwrap();
+        
         assert_eq!("Interstellar", movie.original_title);
+    }
+
+    #[test]
+    fn fetch_movie_languages() {
+        let tmdb_en = TMDb { api_key: API_KEY, language: "en" };
+        let movie_en: Movie = tmdb_en.fetch().id(2277).execute().unwrap();
+        assert_eq!("Bicentennial Man", movie_en.title);
+
+        let tmdb_de = TMDb { api_key: API_KEY, language: "de" };
+        let movie_de: Movie = tmdb_de.fetch().id(2277).execute().unwrap();
+        assert_eq!("Der 200 Jahre Mann", movie_de.title);
+
+        let tmdb_es = TMDb { api_key: API_KEY, language: "es" };
+        let movie_es: Movie = tmdb_es.fetch().id(2277).execute().unwrap();
+        assert_eq!("El hombre bicentenario", movie_es.title);
+    }
+
+    #[test]
+    fn fetch_movie_append_to_response() {
+        let movie = TMDB.fetch()
+            .id(2277)
+            .append_videos()
+            .append_credits()
+            .execute()
+            .unwrap();
+
+        assert_eq!(true, movie.videos.is_some());
+        assert_eq!(true, movie.credits.is_some());
     }
 
     #[test]
     fn search_movie() {
         let empty_movies: Vec<SearchMovie> = vec![];
-        let movies: Vec<SearchMovie> = TMDB.search_movie("Interstellar");
+        
+        let page = TMDB.search()
+            .title("Bicentennial Man")
+            .year(1999)
+            .execute()
+            .unwrap();
+
+        let movies = page.results;
+        
+        assert_eq!(1, page.total_results);
         assert_ne!(empty_movies, movies);
+        assert_eq!("Bicentennial Man", movies[0].title);
+    }
+
+    #[test]
+    fn find_movie_by_imdb_id() {
+        let empty_movies: Vec<FindMovie> = vec![];
+
+        let find_result = TMDB.find()
+            .imdb_id("tt0816692")
+            .execute()
+            .unwrap();
+
+        let movies = find_result.movie_results;
+
+        assert_eq!(1, movies.len());
+        assert_ne!(empty_movies, movies);
+        assert_eq!("Interstellar", movies[0].title);
     }
 
     #[test]
     fn fetch_searched_movie() {
-        let search_movies: Vec<SearchMovie> = TMDB.search_movie("Interstellar");
-        let movie: Movie = search_movies[0].fetch(&TMDB);
-        assert_eq!("Interstellar", movie.title);
+        let page = TMDB.search()
+            .title("Bicentennial Man")
+            .year(1999)
+            .execute()
+            .unwrap();
+
+        let movies = page.results;
+        let movie = movies[0].fetch(&TMDB).unwrap();
+
+        assert_eq!(2277, movie.id);
     }
+
+
 
 }
