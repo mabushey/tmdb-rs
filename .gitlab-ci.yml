@@ -11,6 +11,7 @@ cache:
 
 before_script:
   - rustup toolchain install stable
+  - rustup default stable
   - rustup update
 
 build:
