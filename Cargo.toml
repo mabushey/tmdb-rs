@@ -1,6 +1,6 @@
 [package]
 name = "tmdb"
-version = "1.0.0"
+version = "1.0.1"
 authors = ["Wolfhard Prell <wolfhard.prell@gmail.com>"]
 description = "The Movie Database (TMDb) API for Rust"
 documentation = "https://docs.rs/crate/tmdb"
