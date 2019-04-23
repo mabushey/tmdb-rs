@@ -1,4 +1,4 @@
-use model::{Movie,SearchMovie,SearchResult,FindResult};
+use model::{Movie,TV,SearchMovie,SearchResult,FindResult};
 use reqwest;
 
 const BASE_URL: &'static str = "https://api.themoviedb.org/3";
@@ -101,6 +101,27 @@ impl Executable<Movie> for FetchData {
         return reqwest::get(&url)?.json();
     }
 }
+
+impl Executable<TV> for FetchData {
+    fn execute(&self) -> Result<TV, reqwest::Error> {
+        let mut url: String = format!("{}/tv/{}?api_key={}&language={}",
+                                  BASE_URL, self.id.unwrap(), self.tmdb.api_key, self.tmdb.language);
+
+
+        if self.append_to_response.len() != 0 {
+            url.push_str("&append_to_response=");
+            for appendable in &self.append_to_response {
+                match appendable {
+                    Appendable::Videos => url.push_str("videos,"),
+                    Appendable::Credits => url.push_str("credits,"),
+                }
+            }
+        }
+
+        return reqwest::get(&url)?.json();
+    }
+}
+
 
 pub trait Find<'a> {
     fn imdb_id(&mut self, imdb_id: &'a str) -> &mut FindData<'a>;
