@@ -82,7 +82,7 @@ pub struct LastEpisode {
     pub episode_number: u32,
     pub id: u64,
     pub name: String,
-    pub production_code: String,
+    pub production_code: Option<String>,
     pub season_number: u32,
     pub show_id: u64,
     pub still_path: Option<String>,
@@ -108,7 +108,7 @@ pub struct Network {
 
 #[derive(Debug,PartialEq,Deserialize,Serialize)]
 pub struct Season {
-    pub air_date: String,
+    pub air_date: Option<String>,
     pub episode_count: u32,
     pub id: u64,
     pub name: String,
