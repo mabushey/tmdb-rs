@@ -60,7 +60,8 @@ pub struct Movie {
     pub original_language: String,
     pub overview: Option<String>,
     pub release_date: String, // ToDo: Date Type
-    pub runtime: u8,
+    pub runtime: u32,
+    pub homepage: Option<String>,
     pub genres: Vec<Genre>,
     pub poster_path: Option<String>,
     pub backdrop_path: Option<String>,
