@@ -34,6 +34,26 @@ pub struct Cast {
 }
 
 #[derive(Debug,PartialEq,Deserialize,Serialize)]
+pub struct TVCast {
+    pub id: u64,
+    pub credit_id: String,
+    pub character: String,
+    pub gender: Option<u8>,
+    pub name: String,
+    pub profile_path: Option<String>,
+    pub order: u32,
+}
+
+#[derive(Debug,PartialEq,Deserialize,Serialize)]
+pub struct TVCreator {
+    pub id: u64,
+    pub credit_id: String,
+    pub name: String,
+    pub gender: Option<u8>,
+    pub profile_path: Option<String>,
+}
+
+#[derive(Debug,PartialEq,Deserialize,Serialize)]
 pub struct Crew {
     pub credit_id: String,
     pub department: String,
@@ -48,6 +68,53 @@ pub struct Crew {
 pub struct Credits {
     pub cast: Vec<Cast>,
     pub crew: Vec<Crew>,
+}
+
+#[derive(Debug,PartialEq,Deserialize,Serialize)]
+pub struct TVCredits {
+    pub cast: Vec<TVCast>,
+    pub crew: Vec<Crew>,
+}
+
+#[derive(Debug,PartialEq,Deserialize,Serialize)]
+pub struct LastEpisode {
+    pub air_date: String,
+    pub episode_number: u32,
+    pub id: u64,
+    pub name: String,
+    pub production_code: Option<String>,
+    pub season_number: u32,
+    pub show_id: u64,
+    pub still_path: Option<String>,
+    pub vote_average: f64,
+    pub vote_count: u64,
+}
+
+#[derive(Debug,PartialEq,Deserialize,Serialize)]
+pub struct ProductionCompany {
+    pub id: u64,
+    pub logo_path: Option<String>,
+    pub name: String,
+    pub origin_country: String,
+}
+
+#[derive(Debug,PartialEq,Deserialize,Serialize)]
+pub struct Network {
+    pub id: u64,
+    pub logo_path: Option<String>,
+    pub name: String,
+    pub origin_country: String,
+}
+
+#[derive(Debug,PartialEq,Deserialize,Serialize)]
+pub struct Season {
+    pub air_date: Option<String>,
+    pub episode_count: u32,
+    pub id: u64,
+    pub name: String,
+    pub overview: String,
+    pub poster_path: Option<String>,
+    pub season_number: u32,
 }
 
 #[derive(Debug,PartialEq,Deserialize,Serialize)]
@@ -72,15 +139,38 @@ pub struct Movie {
     pub credits: Option<Credits>,
 }
 
-// struct Foo {
-//     movie: Movie,
-//     seen_by: Vec<User>,
-//     // custom
-//     location: String,
-//     quality: String,
-//     version: String,
-
-// }
+#[derive(Debug,PartialEq,Deserialize,Serialize)]
+pub struct TV {
+    pub id: u64,
+    pub backdrop_path: Option<String>,
+    pub created_by: Vec<TVCreator>,
+    pub episode_run_time: Vec<u64>,
+    pub first_air_date: String,
+    pub genres: Vec<Genre>,
+    pub homepage: Option<String>,
+    pub in_production: bool,
+    pub languages: Vec<String>,
+    pub last_air_date: String,
+    pub last_episode_to_air: Option<LastEpisode>,
+    pub name: String,
+    pub networks: Vec<Network>,
+    pub number_of_episodes: u32,
+    pub number_of_seasons: u32,
+    pub origin_country: Vec<String>,
+    pub original_language: String,
+    pub original_name: String,
+    pub overview: String,
+    pub popularity: f64,
+    pub poster_path: Option<String>,
+    pub production_companies: Vec<ProductionCompany>,
+    pub seasons: Vec<Season>,
+    pub status: String,
+    pub r#type: String,
+    pub vote_average: f64,
+    pub vote_count: u64,
+    pub videos: Option<Results<Video>>,
+    pub credits: Option<TVCredits>,
+}
 
 #[derive(Debug,PartialEq,Deserialize,Serialize)]
 pub struct SearchMovie {

@@ -31,7 +31,7 @@ pub mod themoviedb;
 #[cfg(test)]
 mod integration_tests {
 
-    use model::{Movie,SearchMovie,FindMovie};
+    use model::{Movie,TV,SearchMovie,FindMovie};
     use themoviedb::*;
 
     const API_KEY: &'static str = env!("TMDB_API_KEY");
@@ -65,7 +65,7 @@ mod integration_tests {
 
     #[test]
     fn fetch_movie_append_to_response() {
-        let movie = TMDB.fetch()
+        let movie: Movie = TMDB.fetch()
             .id(2277)
             .append_videos()
             .append_credits()
@@ -123,6 +123,27 @@ mod integration_tests {
         assert_eq!(2277, movie.id);
     }
 
+    #[test]
+    fn fetch_tv() {
+        let tv: TV = TMDB.fetch()
+            .id(2316)
+            .execute()
+            .unwrap();
+        
+        assert_eq!("The Office", tv.original_name);
+    }
 
+    #[test]
+    fn fetch_tv_append_to_response() {
+        let tv: TV = TMDB.fetch()
+            .id(2316)
+            .append_videos()
+            .append_credits()
+            .execute()
+            .unwrap();
+
+        assert_eq!(true, tv.videos.is_some());
+        assert_eq!(true, tv.credits.is_some());
+    }
 
 }
