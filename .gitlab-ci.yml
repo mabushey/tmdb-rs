@@ -3,12 +3,6 @@ stages:
   - test
   - deploy
 
-cache:
-  paths:
-    - target/
-    - ~/.cargo/
-    - ~/.rustup
-
 before_script:
   - rustup toolchain install stable
   - rustup default stable
