@@ -6,28 +6,6 @@ extern crate reqwest;
 pub mod model;
 pub mod themoviedb;
 
-// #[cfg(test)]
-// mod unit_tests {
-
-//     use model::*;
-//     use themoviedb::*;
-
-//     const API_KEY: &'static str = "123456789";
-//     const LANGUAGE: &'static str = "en";
-//     // const TMDB: TMDb = TMDb { api_key: API_KEY, language: LANGUAGE};
-
-//     #[test]
-//     fn test() {
-//         // let result = TMDB.search()
-//         //     .title("Interstellar")
-//         //     .execute();
-
-//         // println!("{:?}", result);
-//         assert_eq!(1,1);
-//     }
-    
-// }
-
 #[cfg(test)]
 mod integration_tests {
 
