@@ -10,6 +10,6 @@ readme = "README.md"
 license = "MIT"
 
 [dependencies]
-serde = "1.0.80"
-serde_derive = "1.0.80"
+serde = "1.0.123"
+serde_derive = "1.0.123"
 reqwest = "0.9.5"
