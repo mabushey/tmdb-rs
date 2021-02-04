@@ -20,5 +20,5 @@ fn main() {
 
     let interstellar: Movie = tmdb.fetch().id(id).execute().unwrap();
 
-    println!("{:?}", interstellar);
+    println!("{:#?}", interstellar);
 }

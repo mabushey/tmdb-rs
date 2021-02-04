@@ -28,7 +28,7 @@ fn main() {
         .execute()
         .unwrap();
 
-    println!("{:?}", interstellar);
+    println!("{:#?}", interstellar);
 }
 ```
 
@@ -46,10 +46,10 @@ You can search for movies by `title` and `year`.
 
 ```rust
 let page = tmdb.search()
-	.title("Bicentennial Man")
-	.year(1999)
-	.execute()
-	.unwrap();
+    .title("Bicentennial Man")
+    .year(1999)
+    .execute()
+    .unwrap();
 
 let movies = page.results;
 ```
@@ -60,20 +60,20 @@ You can fetch a movie, when you know its ID. Then you get all the movie details.
 
 ```rust
 let movie = tmdb.fetch()
-	.id(157336)
-	.execute()
-	.unwrap();
+    .id(157336)
+    .execute()
+    .unwrap();
 ```
 
 When you don't have any movie ID, you can search for a movie and then easily fetch the full details.
 
 ```rust
 let page = tmdb.search()
-	.title("Bicentennial Man")
-	.year(1999)
-	.execute()
-	.unwrap();
-	
+   .title("Bicentennial Man")
+   .year(1999)
+   .execute()
+   .unwrap();
+
 let movies = page.results;
 let movie = movies[0].fetch(&tmdb).unwrap();
 ```
@@ -82,11 +82,11 @@ Furthermore you can request some more data with the [append to response](https:/
 
 ```rust
 let movie = tmdb.fetch()
-	.id(2277)
-	.append_videos()
-	.append_credits()
-	.execute()
-	.unwrap();
+    .id(2277)
+    .append_videos()
+    .append_credits()
+    .execute()
+    .unwrap();
 ```
 
 ### Finding
@@ -95,9 +95,9 @@ let movie = tmdb.fetch()
 
 ```rust
 let find_result = tmdb.find()
-	.imdb_id("tt0816692")
-	.execute()
-	.unwrap();
+    .imdb_id("tt0816692")
+    .execute()
+    .unwrap();
 
 let movies = find_result.movie_results;
 ```
@@ -105,5 +105,4 @@ let movies = find_result.movie_results;
 ## Acknowledgements
 
 * This lib is heavily inspired by [omdb-rs](https://github.com/aldrio/omdb-rs)
-
-https://www.themoviedb.org/
+* [The Movie Database (TMDb)](https://www.themoviedb.org/)
