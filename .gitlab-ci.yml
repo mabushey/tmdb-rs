@@ -29,6 +29,13 @@ integration_tests:
   script:
     - cargo test integration_tests
 
+example_tests:
+  stage: test
+  tags:
+    - server
+  script: 
+    - cargo run --example basic
+
 deploy:
   stage: deploy
   tags:

@@ -21,9 +21,9 @@ fn main() {
         .execute()
         .unwrap();
 
-    let id = movies[0].id;
+    let id = movies.results[0].id;
     
-    let interstellar = tmdb.fetch()
+    let interstellar: Movie = tmdb.fetch()
         .id(id)
         .execute()
         .unwrap();
