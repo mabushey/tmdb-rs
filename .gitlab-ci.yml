@@ -1,49 +1,46 @@
 stages:
   - build
   - test
-  - deploy
+  - lint
+  - publish
 
 before_script:
-  - rustup toolchain install stable
-  - rustup default stable
-  - rustup update
+  - make setup
 
 build:
   stage: build
   tags:
     - server
   script:
-    - cargo build
+    - make build
 
-unit_tests:
+test:
   stage: test
   tags:
     - server
   script:
-    - cargo test unit_tests
+    - make test
 
-integration_tests:
-  stage: test
-  tags:
-    - server
-  script:
-    - cargo test integration_tests
-
-example_tests:
+test_examples:
   stage: test
   tags:
     - server
   script: 
-    - cargo run --example basic
+    - make test_examples
 
-deploy:
-  stage: deploy
+lint:
+  stage: lint
+  tags:
+  - server
+  script:
+    - make lint
+
+publish:
+  stage: publish
   tags:
     - server
   script:
-    - cargo login $CRATES_TOKEN
-    - cargo package
-    - cargo publish
+    - make publish
   when: manual
   only:
     - master
