@@ -12,8 +12,8 @@ mod integration_tests {
     use model::{Movie,TV,SearchMovie,FindMovie};
     use themoviedb::*;
 
-    const API_KEY: &'static str = env!("TMDB_API_KEY");
-    const LANGUAGE: &'static str = "en";
+    const API_KEY: &str = env!("TMDB_API_KEY");
+    const LANGUAGE: &str = "en";
     const TMDB: TMDb = TMDb { api_key: API_KEY, language: LANGUAGE };
 
     #[test]

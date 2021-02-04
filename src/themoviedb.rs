@@ -1,7 +1,7 @@
-use model::{Movie,TV,SearchMovie,SearchResult,FindResult};
+use model::{FindResult, Movie, SearchMovie, SearchResult, TV};
 use reqwest;
 
-const BASE_URL: &'static str = "https://api.themoviedb.org/3";
+const BASE_URL: &str = "https://api.themoviedb.org/3";
 // const BASE_IMG_URL: &'static str = "https://image.tmdb.org/t/p/w500";
 // "https://image.tmdb.org/t/p/w700_and_h392_bestv2/gq4Z1pfOWHn3FKFNutlDCySps9C.jpg"
 
@@ -22,29 +22,38 @@ pub struct SearchData<'a> {
 }
 
 impl<'a> Search<'a> for SearchData<'a> {
-    
     fn title(&mut self, title: &'a str) -> &mut SearchData<'a> {
         self.title = Some(title);
-        return self;
+        self
     }
 
     fn year(&mut self, year: u64) -> &mut SearchData<'a> {
         self.year = Some(year);
-        return self;
+        self
     }
 }
 
 impl<'a> Executable<SearchResult> for SearchData<'a> {
-    
     fn execute(&self) -> Result<SearchResult, reqwest::Error> {
         let url: String = match self.year {
-            None => format!("{}/search/movie?api_key={}&language={}&query={}&append_to_response=images",
-                            BASE_URL, self.tmdb.api_key, self.tmdb.language, self.title.unwrap()),
-            Some(year) => format!("{}/search/movie?api_key={}&language={}&query={}&year={}&append_to_response=images",
-                            BASE_URL, self.tmdb.api_key, self.tmdb.language, self.title.unwrap(), year),
+            None => format!(
+                "{}/search/movie?api_key={}&language={}&query={}&append_to_response=images",
+                BASE_URL,
+                self.tmdb.api_key,
+                self.tmdb.language,
+                self.title.unwrap()
+            ),
+            Some(year) => format!(
+                "{}/search/movie?api_key={}&language={}&query={}&year={}&append_to_response=images",
+                BASE_URL,
+                self.tmdb.api_key,
+                self.tmdb.language,
+                self.title.unwrap(),
+                year
+            ),
         };
 
-        return reqwest::get(&url)?.json();
+        reqwest::get(&url)?.json()
     }
 }
 
@@ -68,27 +77,31 @@ pub struct FetchData {
 impl Fetch for FetchData {
     fn id(&mut self, id: u64) -> &mut FetchData {
         self.id = Some(id);
-        return self;
+        self
     }
 
     fn append_videos(&mut self) -> &mut FetchData {
         self.append_to_response.push(Appendable::Videos);
-        return self;
+        self
     }
 
     fn append_credits(&mut self) -> &mut FetchData {
         self.append_to_response.push(Appendable::Credits);
-        return self;
+        self
     }
 }
 
 impl Executable<Movie> for FetchData {
     fn execute(&self) -> Result<Movie, reqwest::Error> {
-        let mut url: String = format!("{}/movie/{}?api_key={}&language={}",
-                                  BASE_URL, self.id.unwrap(), self.tmdb.api_key, self.tmdb.language);
+        let mut url: String = format!(
+            "{}/movie/{}?api_key={}&language={}",
+            BASE_URL,
+            self.id.unwrap(),
+            self.tmdb.api_key,
+            self.tmdb.language
+        );
 
-
-        if self.append_to_response.len() != 0 {
+        if !self.append_to_response.is_empty() {
             url.push_str("&append_to_response=");
             for appendable in &self.append_to_response {
                 match appendable {
@@ -98,17 +111,21 @@ impl Executable<Movie> for FetchData {
             }
         }
 
-        return reqwest::get(&url)?.json();
+        reqwest::get(&url)?.json()
     }
 }
 
 impl Executable<TV> for FetchData {
     fn execute(&self) -> Result<TV, reqwest::Error> {
-        let mut url: String = format!("{}/tv/{}?api_key={}&language={}",
-                                  BASE_URL, self.id.unwrap(), self.tmdb.api_key, self.tmdb.language);
+        let mut url: String = format!(
+            "{}/tv/{}?api_key={}&language={}",
+            BASE_URL,
+            self.id.unwrap(),
+            self.tmdb.api_key,
+            self.tmdb.language
+        );
 
-
-        if self.append_to_response.len() != 0 {
+        if !self.append_to_response.is_empty() {
             url.push_str("&append_to_response=");
             for appendable in &self.append_to_response {
                 match appendable {
@@ -118,10 +135,9 @@ impl Executable<TV> for FetchData {
             }
         }
 
-        return reqwest::get(&url)?.json();
+        reqwest::get(&url)?.json()
     }
 }
-
 
 pub trait Find<'a> {
     fn imdb_id(&mut self, imdb_id: &'a str) -> &mut FindData<'a>;
@@ -133,17 +149,22 @@ pub struct FindData<'a> {
 }
 
 impl<'a> Find<'a> for FindData<'a> {
-
     fn imdb_id(&mut self, imdb_id: &'a str) -> &mut FindData<'a> {
         self.imdb_id = Some(imdb_id);
-        return self;
+        self
     }
 }
 
 impl<'a> Executable<FindResult> for FindData<'a> {
     fn execute(&self) -> Result<FindResult, reqwest::Error> {
-        let url = format!("{}/find/{}?api_key={}&external_source=imdb_id&language={}&append_to_response=images", BASE_URL, self.imdb_id.unwrap(), self.tmdb.api_key, self.tmdb.language);
-        return reqwest::get(&url)?.json();
+        let url = format!(
+            "{}/find/{}?api_key={}&external_source=imdb_id&language={}&append_to_response=images",
+            BASE_URL,
+            self.imdb_id.unwrap(),
+            self.tmdb.api_key,
+            self.tmdb.language
+        );
+        reqwest::get(&url)?.json()
     }
 }
 
@@ -153,29 +174,38 @@ pub trait TMDbApi {
     fn find(&self) -> FindData;
 }
 
-#[derive(Debug,Clone)]
-pub struct TMDb { 
+#[derive(Debug, Clone)]
+pub struct TMDb {
     pub api_key: &'static str,
     pub language: &'static str,
 }
 
 impl TMDbApi for TMDb {
-
     fn search(&self) -> SearchData {
         let tmdb = self.clone();
-        return SearchData {tmdb: tmdb, title: None, year: None};
+        SearchData {
+            tmdb,
+            title: None,
+            year: None,
+        }
     }
 
     fn fetch(&self) -> FetchData {
         let tmdb = self.clone();
-        return FetchData {tmdb: tmdb, id: None, append_to_response: vec![]};
+        FetchData {
+            tmdb,
+            id: None,
+            append_to_response: vec![],
+        }
     }
 
     fn find(&self) -> FindData {
         let tmdb = self.clone();
-        return FindData {tmdb: tmdb, imdb_id: None};
+        FindData {
+            tmdb,
+            imdb_id: None,
+        }
     }
-    
 }
 
 pub trait Fetchable {
@@ -184,8 +214,6 @@ pub trait Fetchable {
 
 impl Fetchable for SearchMovie {
     fn fetch(&self, tmdb: &TMDb) -> Result<Movie, reqwest::Error> {
-        return tmdb.fetch()
-            .id(self.id)
-            .execute();
+        tmdb.fetch().id(self.id).execute()
     }
 }
