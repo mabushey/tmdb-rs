@@ -2,6 +2,7 @@ stages:
   - build
   - test
   - lint
+  - style
   - publish
 
 before_script:
@@ -25,15 +26,22 @@ test_examples:
   stage: test
   tags:
     - server
-  script: 
+  script:
     - make test_examples
 
 lint:
   stage: lint
   tags:
-  - server
+    - server
   script:
     - make lint
+
+style:
+  stage: style
+  tags:
+    - server
+  script:
+    - make check_style
 
 publish:
   stage: publish
