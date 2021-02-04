@@ -1,15 +1,15 @@
-#[derive(Debug,PartialEq,Deserialize,Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct Genre {
     pub id: u64,
     pub name: String,
 }
 
-#[derive(Debug,PartialEq,Deserialize,Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct Results<T> {
     pub results: Vec<T>,
 }
 
-#[derive(Debug,PartialEq,Deserialize,Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct Video {
     pub id: String,
     pub iso_639_1: String,
@@ -21,7 +21,7 @@ pub struct Video {
     pub video_type: String,
 }
 
-#[derive(Debug,PartialEq,Deserialize,Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct Cast {
     pub id: u64,
     pub cast_id: u64,
@@ -33,7 +33,7 @@ pub struct Cast {
     pub order: u8,
 }
 
-#[derive(Debug,PartialEq,Deserialize,Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct TVCast {
     pub id: u64,
     pub credit_id: String,
@@ -44,7 +44,7 @@ pub struct TVCast {
     pub order: u32,
 }
 
-#[derive(Debug,PartialEq,Deserialize,Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct TVCreator {
     pub id: u64,
     pub credit_id: String,
@@ -53,7 +53,7 @@ pub struct TVCreator {
     pub profile_path: Option<String>,
 }
 
-#[derive(Debug,PartialEq,Deserialize,Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct Crew {
     pub credit_id: String,
     pub department: String,
@@ -64,19 +64,19 @@ pub struct Crew {
     pub profile_path: Option<String>,
 }
 
-#[derive(Debug,PartialEq,Deserialize,Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct Credits {
     pub cast: Vec<Cast>,
     pub crew: Vec<Crew>,
 }
 
-#[derive(Debug,PartialEq,Deserialize,Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct TVCredits {
     pub cast: Vec<TVCast>,
     pub crew: Vec<Crew>,
 }
 
-#[derive(Debug,PartialEq,Deserialize,Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct LastEpisode {
     pub air_date: String,
     pub episode_number: u32,
@@ -90,7 +90,7 @@ pub struct LastEpisode {
     pub vote_count: u64,
 }
 
-#[derive(Debug,PartialEq,Deserialize,Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct ProductionCompany {
     pub id: u64,
     pub logo_path: Option<String>,
@@ -98,7 +98,7 @@ pub struct ProductionCompany {
     pub origin_country: String,
 }
 
-#[derive(Debug,PartialEq,Deserialize,Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct Network {
     pub id: u64,
     pub logo_path: Option<String>,
@@ -106,7 +106,7 @@ pub struct Network {
     pub origin_country: String,
 }
 
-#[derive(Debug,PartialEq,Deserialize,Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct Season {
     pub air_date: Option<String>,
     pub episode_count: u32,
@@ -117,7 +117,7 @@ pub struct Season {
     pub season_number: u32,
 }
 
-#[derive(Debug,PartialEq,Deserialize,Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct Movie {
     pub id: u64,
     pub imdb_id: String,
@@ -139,7 +139,7 @@ pub struct Movie {
     pub credits: Option<Credits>,
 }
 
-#[derive(Debug,PartialEq,Deserialize,Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct TV {
     pub id: u64,
     pub backdrop_path: Option<String>,
@@ -172,7 +172,7 @@ pub struct TV {
     pub credits: Option<TVCredits>,
 }
 
-#[derive(Debug,PartialEq,Deserialize,Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct SearchMovie {
     pub id: u64,
     pub title: String,
@@ -187,7 +187,7 @@ pub struct SearchMovie {
     pub adult: bool,
 }
 
-#[derive(Debug,PartialEq,Deserialize,Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct FindMovie {
     pub id: u64,
     pub title: String,
@@ -201,7 +201,7 @@ pub struct FindMovie {
     pub adult: bool,
 }
 
-#[derive(Debug,PartialEq,Deserialize,Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct SearchResult {
     pub page: u8,
     pub total_results: u8,
@@ -209,8 +209,7 @@ pub struct SearchResult {
     pub results: Vec<SearchMovie>,
 }
 
-#[derive(Debug,PartialEq,Deserialize,Serialize)]
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
 pub struct FindResult {
     pub movie_results: Vec<FindMovie>,
 }
-
