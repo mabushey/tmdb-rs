@@ -3,6 +3,7 @@
 ![The Movie Database](https://www.themoviedb.org/assets/2/v4/logos/408x161-powered-by-rectangle-green-bb4301c10ddc749b4e79463811a68afebeae66ef43d17bcfd8ff0e60ded7ce99.png)
 
 This is a wrapper around the [TMDb API](https://developers.themoviedb.org/3).
+This is a fork, the parent repo is [tmdb-rs](https://gitlab.com/Cir0X/tmdb-rs.git)
 
 ## Usage
 
@@ -101,6 +102,20 @@ let find_result = tmdb.find()
 
 let movies = find_result.movie_results;
 ```
+
+### Dynamic TMDB_API_KEY
+
+To use an API key that's not hardcoded or an ENV, use the lazy_static crate.
+```rust
+lazy_static! {
+  static ref CONFIG: Cfg = read_config();
+}
+
+let tmdb = TMDb { api_key: &CONFIG.tmdb_api_key, language: "en" };
+```
+
+read_config uses serde_yaml to read in a config file containing
+`tmdb_api_key: [redacted]`.
 
 ## Acknowledgements
 
